@@ -7,7 +7,7 @@ const userModel = mongoose.model(collection, mongoose.Schema({
     email: { type: String, required: true },
     age: { type: Number, required: true },
     password: { type: String, required: true },
-    cartId: String,
+    cartId: { type: mongoose.Schema.ObjectId, ref: "cart" },
     rol: { type: String, default: "user", enum: ["user", "admin"] }
 }))
 export default userModel

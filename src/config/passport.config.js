@@ -7,7 +7,7 @@ const cookieStractor = (req) => {
     return token
 }
 const initializedPassport = () => {
-    passport.serializeUser("jwt", new JWTStrategy(
+    passport.use("jwt", new JWTStrategy(
         { secretOrKey: "C0D3RH0US3", jwtFromRequest: jwt.ExtractJwt.fromExtractors([cookieStractor]) },
         (jwt_payload, done) => { return done(null, jwt_payload) }
     ))
