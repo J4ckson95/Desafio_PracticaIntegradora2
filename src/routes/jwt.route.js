@@ -1,6 +1,7 @@
 import { Router } from "express";
+import passport from "passport";
 import userModel from "../models/user.model.js"
-import { generateHash } from "../utils.js"
+import { generateHash, validateHash, generateToken } from "../utils.js"
 
 const router = Router()
 
@@ -12,5 +13,13 @@ router.post("/register", async (req, res) => {
     await userModel.create(newUser)
     return res.redirect("/login")
 })
+router.post("/login", async (req, res) => {
+    const { email, password } = req.body
+    const user = await userModel.findOne({ email: email })
+    if (!user) return res.status(401).send({ status: "Error", Error: "Invalid Credentials" })
+    if (!validateHash(user, password)) return res.status(403).send({ status: "Error", Error: "Invalid Password" })
+    const token = generateToken(user)
+    res.cookie("authToken", token).redirect("/home")
 
+})
 export default router
