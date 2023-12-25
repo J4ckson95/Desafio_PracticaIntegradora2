@@ -22,4 +22,10 @@ router.post("/login", async (req, res) => {
     res.cookie("authToken", token).redirect("/home")
 
 })
+router.get("/session/current",
+    passport.authenticate("jwt", { session: false }),
+    (req, res) => {
+        const { user } = req.user
+        res.send({ status: "Succes", payload: user })
+    })
 export default router

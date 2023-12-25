@@ -5,6 +5,8 @@ import handlebars from "express-handlebars"
 import __dirname from "./utils.js"
 import viewRouter from "./routes/views.route.js"
 import jwtRouter from "./routes/jwt.route.js"
+import passport from "passport"
+import initializedPassport from "./config/passport.config.js"
 
 const app = express()
 const mongoURL = "mongodb+srv://J4ckson:IIQyDhhK1Ax1pSgX@coderhousebackend.jdnxmo1.mongodb.net/"
@@ -18,6 +20,9 @@ app.use(cookieParser())
 app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname + `/views`)
 app.set("view engine", "handlebars")
+
+initializedPassport()
+app.use(passport.initialize())
 
 app.use("/", viewRouter)
 app.use("/api/jwt", jwtRouter)
